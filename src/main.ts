@@ -308,6 +308,19 @@ export default class CSSSettingsPlugin extends Plugin {
 		);
 	}
 
+	/**
+	 * Obsidian calls this when data.json changes on disk while the plugin runs, for example
+	 * after Obsidian Sync or a git pull. Without reloading, the next save would write the old
+	 * settings back over the change.
+	 */
+	async onExternalSettingsChange() {
+		await this.settingsManager.reload();
+		this.settingsTab.rerender();
+		for (const leaf of this.app.workspace.getLeavesOfType(viewType)) {
+			(leaf.view as SettingsView).rerender();
+		}
+	}
+
 	onunload() {
 		this.lightEl.remove();
 		this.darkEl.remove();

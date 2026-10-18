@@ -434,6 +434,17 @@ export class CSSSettingsManager {
 		this.settings = Object.assign({}, await this.plugin.loadData());
 	}
 
+	/**
+	 * Reads data.json again and applies it, for when it changed on disk. The classes of the old
+	 * values are removed first, so a class toggle that was turned off elsewhere is turned off here.
+	 */
+	async reload() {
+		this.removeClasses();
+		await this.load();
+		this.initClasses();
+		this.setCSSVariables();
+	}
+
 	initClasses() {
 		Object.keys(this.config).forEach((section) => {
 			const config = this.config[section];

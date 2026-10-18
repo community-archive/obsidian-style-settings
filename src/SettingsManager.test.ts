@@ -28,7 +28,7 @@ vi.mock('./main', () => ({
 	default: class {},
 }));
 
-const { generateColorVariables, safeNum, safeRound } = await import(
+const { CSSSettingsManager, generateColorVariables, safeNum, safeRound } = await import(
 	'./SettingsManager'
 );
 
@@ -89,5 +89,31 @@ describe('generateColorVariables', () => {
 		const result = generateColorVariables('test', 'hsl-values', '#ff0000', false);
 		expect(result).toHaveLength(1);
 		expect(result[0].value).not.toMatch(/NaN/i);
+	});
+});
+
+describe('CSSSettingsManager.reload', () => {
+	it('swaps the old classes for the saved ones and applies the variables', async () => {
+		const calls: string[] = [];
+		const manager = Object.create(CSSSettingsManager.prototype);
+		manager.plugin = {
+			loadData: async () => {
+				calls.push('loadData');
+				return { 'section@@setting': true };
+			},
+		};
+		manager.removeClasses = () => calls.push('removeClasses');
+		manager.initClasses = () => calls.push('initClasses');
+		manager.setCSSVariables = () => calls.push('setCSSVariables');
+
+		await manager.reload();
+
+		expect(calls).toEqual([
+			'removeClasses',
+			'loadData',
+			'initClasses',
+			'setCSSVariables',
+		]);
+		expect(manager.settings).toEqual({ 'section@@setting': true });
 	});
 });
