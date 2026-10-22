@@ -6,6 +6,21 @@ import { ErrorList } from 'src/Utils';
 
 export const viewType = 'style-settings';
 
+/**
+ * Returns the loaded Style Settings views among the given leaves.
+ *
+ * Since Obsidian 1.7.2, leaves restored from the workspace are deferred until
+ * they are first shown, and `leaf.view` is then a placeholder that does not
+ * have our methods. Calling `setSettings` on it throws and aborts the caller.
+ */
+export function getLoadedSettingsViews(
+	leaves: WorkspaceLeaf[]
+): SettingsView[] {
+	return leaves
+		.map((leaf) => leaf.view)
+		.filter((view): view is SettingsView => view instanceof SettingsView);
+}
+
 export class SettingsView extends ItemView {
 	settingsMarkup: SettingsMarkup | null;
 	plugin: CSSSettingsPlugin;
@@ -33,8 +48,12 @@ export class SettingsView extends ItemView {
 		this.settingsMarkup = this.addChild(
 			new SettingsMarkup(this.plugin.app, this.plugin, this.contentEl, true)
 		);
-		if (this.settings) {
-			this.settingsMarkup.setSettings(this.settings, this.errorList);
+		// A view restored from the workspace can load after the plugin has
+		// already parsed the CSS, so fall back to the plugin's current settings.
+		const settings = this.settings ?? this.plugin.settingsList;
+		const errorList = this.errorList ?? this.plugin.errorList;
+		if (settings) {
+			this.settingsMarkup.setSettings(settings, errorList);
 		}
 	}
 
