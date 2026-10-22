@@ -16,7 +16,11 @@ import './css/pickerOverrides.css';
 import './css/settings.css';
 import { CSSSettingsTab } from './settingsView/CSSSettingsTab';
 import { SettingType } from './settingsView/SettingComponents/types';
-import { SettingsView, viewType } from './settingsView/SettingsView';
+import {
+	getLoadedSettingsViews,
+	SettingsView,
+	viewType,
+} from './settingsView/SettingsView';
 import '@simonwep/pickr/dist/themes/nano.min.css';
 import detectIndent from 'detect-indent';
 import yaml from 'js-yaml';
@@ -76,14 +80,15 @@ export default class CSSSettingsPlugin extends Plugin {
 
 		this.app.workspace.onLayoutReady(() => {
 			if (this.settingsList) {
-				this.app.workspace.getLeavesOfType(viewType).forEach((leaf) => {
-					(leaf.view as SettingsView).setSettings(
-						this.settingsList,
-						this.errorList
-					);
+				this.getSettingsViews().forEach((view) => {
+					view.setSettings(this.settingsList, this.errorList);
 				});
 			}
 		});
+	}
+
+	getSettingsViews(): SettingsView[] {
+		return getLoadedSettingsViews(this.app.workspace.getLeavesOfType(viewType));
 	}
 
 	getCSSVar(id: string) {
@@ -122,11 +127,8 @@ export default class CSSSettingsPlugin extends Plugin {
 			this.registerSettingsToSettingsSearch();
 
 			this.settingsTab.setSettings(this.settingsList, this.errorList);
-			this.app.workspace.getLeavesOfType(viewType).forEach((leaf) => {
-				(leaf.view as SettingsView).setSettings(
-					this.settingsList,
-					this.errorList
-				);
+			this.getSettingsViews().forEach((view) => {
+				view.setSettings(this.settingsList, this.errorList);
 			});
 			this.settingsManager.setConfig(this.settingsList);
 			this.settingsManager.initClasses();
@@ -300,8 +302,8 @@ export default class CSSSettingsPlugin extends Plugin {
 					) as boolean);
 					this.settingsManager.setSetting(section.id, setting.id, value);
 					this.settingsTab.rerender();
-					for (const leaf of this.app.workspace.getLeavesOfType(viewType)) {
-						(leaf.view as SettingsView).rerender();
+					for (const view of this.getSettingsViews()) {
+						view.rerender();
 					}
 				},
 			})
@@ -332,6 +334,8 @@ export default class CSSSettingsPlugin extends Plugin {
 			active: true,
 		});
 
-		(leaf.view as SettingsView).setSettings(this.settingsList, this.errorList);
+		if (leaf.view instanceof SettingsView) {
+			leaf.view.setSettings(this.settingsList, this.errorList);
+		}
 	}
 }
