@@ -43,6 +43,6 @@
     "detect-indent": "^7.0.0",
     "dotenv": "^10.0.0",
     "fuzzysort": "^2.0.4",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.1"
   }
 }
