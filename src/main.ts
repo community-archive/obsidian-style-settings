@@ -224,7 +224,7 @@ export default class CSSSettingsPlugin extends Plugin {
 						for (const warning of warnings) {
 							this.errorList.push({
 								name,
-								error: `[${warning.code}] ${t(warning.message as keyof typeof import('./lang/locale/en').en)}`,
+								error: `[${warning.code}] ${t(warning.message)}`,
 							});
 						}
 					}
@@ -293,7 +293,7 @@ export default class CSSSettingsPlugin extends Plugin {
 		this.commandList.push(
 			this.addCommand({
 				id: `style-settings-class-toggle-${section.id}-${setting.id}`,
-				name: `Toggle ${setting.title}`,
+				name: t('Toggle {{title}}', { title: getTitle(setting) }),
 				callback: () => {
 					const value = !(this.settingsManager.getSetting(
 						section.id,

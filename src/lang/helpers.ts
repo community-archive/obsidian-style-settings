@@ -27,9 +27,16 @@ export const lang: string | null = window.localStorage.getItem('language');
 
 function normalizeLang(value: string | null): string {
 	if (!value) return 'en';
-	const normalized = value.replace('_', '-').toLowerCase();
-	if (normalized === 'zh-tw' || normalized === 'zh-hant') return 'zh-TW';
-	if (normalized.split('-')[0] === 'zh') return 'zh';
+	const [language, ...subtags] = value
+		.replace(/_/g, '-')
+		.toLowerCase()
+		.split('-');
+	if (language === 'zh') {
+		if (subtags.includes('hans')) return 'zh';
+		if (subtags.some((subtag) => ['hant', 'tw', 'hk', 'mo'].includes(subtag)))
+			return 'zh-TW';
+		return 'zh';
+	}
 	return value;
 }
 
@@ -64,7 +71,10 @@ const localeMap: { [k: string]: Partial<typeof en> } = {
 
 const locale = localeMap[normalizedLang];
 
-export function t(str: keyof typeof en, values: Record<string, string> = {}): string {
+export function t(
+	str: keyof typeof en,
+	values: Record<string, string> = {}
+): string {
 	if (!locale) {
 		console.error('Error: Style Settings locale not found', normalizedLang);
 	}
