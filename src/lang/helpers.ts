@@ -33,7 +33,7 @@ function normalizeLang(value: string | null): string {
 	return value;
 }
 
-const normalizedLang = normalizeLang(lang);
+export const normalizedLang: string = normalizeLang(lang);
 
 const localeMap: { [k: string]: Partial<typeof en> } = {
 	ar,
