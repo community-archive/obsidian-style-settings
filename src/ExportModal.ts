@@ -1,3 +1,4 @@
+import { t } from './lang/helpers';
 import { SettingValue } from './SettingsManager';
 import CSSSettingsPlugin from './main';
 import { App, Modal, Setting, TextAreaComponent } from 'obsidian';
@@ -23,9 +24,10 @@ export class ExportModal extends Modal {
 		const { contentEl, modalEl } = this;
 
 		modalEl.addClass('modal-style-settings');
+		this.titleEl.setText(t('Export settings'));
 
 		new Setting(contentEl)
-			.setName(`Export settings for: ${this.section}`)
+			.setName(t('Export settings for: {{section}}', { section: this.section }))
 			.then((setting) => {
 				const output = JSON.stringify(this.config, null, 2);
 
@@ -34,7 +36,7 @@ export class ExportModal extends Modal {
 					'a',
 					{
 						cls: 'style-settings-copy',
-						text: 'Copy to clipboard',
+						text: t('Copy to clipboard'),
 						href: '#',
 					},
 					(copyButton) => {
@@ -65,7 +67,7 @@ export class ExportModal extends Modal {
 				// Build a download link
 				setting.controlEl.createEl('a', {
 					cls: 'style-settings-download',
-					text: 'Download',
+					text: t('Download'),
 					attr: {
 						download: 'style-settings.json',
 						href: `data:application/json;charset=utf-8,${encodeURIComponent(

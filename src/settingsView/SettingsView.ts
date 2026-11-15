@@ -1,4 +1,5 @@
 import CSSSettingsPlugin from '../main';
+import { t } from '../lang/helpers';
 import { SettingsMarkup } from './SettingsMarkup';
 import { ItemView, WorkspaceLeaf } from 'obsidian';
 import { ParsedCSSSettings } from 'src/SettingHandlers';
@@ -51,6 +52,6 @@ export class SettingsView extends ItemView {
 	}
 
 	getDisplayText() {
-		return 'Style Settings';
+		return t('Style Settings');
 	}
 }

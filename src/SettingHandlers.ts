@@ -1,6 +1,7 @@
+import { t } from './lang/helpers';
 import { SettingType } from './settingsView/SettingComponents/types';
 
-export const resetTooltip = 'Restore default';
+export const resetTooltip = () => t('Restore default');
 
 export interface WithTitle {
 	title: string;

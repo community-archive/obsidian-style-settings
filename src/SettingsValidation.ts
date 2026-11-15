@@ -14,10 +14,11 @@ import {
 } from './SettingHandlers';
 import { SettingType } from './settingsView/SettingComponents/types';
 import { isValidDefaultColor } from './Utils';
+import type { en } from './lang/locale/en';
 
 export interface ValidationWarning {
 	code: string;
-	message: string;
+	message: keyof typeof en;
 	settingId?: string;
 }
 
@@ -45,7 +46,7 @@ const getOptionValues = (options: Array<string | { value: string }>) =>
 const addWarning = (
 	warnings: ValidationWarning[],
 	code: string,
-	message: string,
+	message: keyof typeof en,
 	settingId?: string
 ) => {
 	warnings.push({ code, message, settingId });

@@ -122,7 +122,7 @@ export class VariableColorSettingComponent extends AbstractSettingComponent {
 				pickerEl.style.setProperty('--pcr-color', resetColor || '');
 				this.settingsManager.clearSetting(this.sectionId, this.setting.id);
 			});
-			b.setTooltip(resetTooltip);
+			b.setTooltip(resetTooltip());
 		});
 
 		this.settingEl.settingEl.dataset.id = this.setting.id;

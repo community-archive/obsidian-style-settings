@@ -10,6 +10,7 @@ import { VariableNumberSliderSettingComponent } from './VariableNumberSliderSett
 import { VariableSelectSettingComponent } from './VariableSelectSettingComponent';
 import { VariableTextSettingComponent } from './VariableTextSettingComponent';
 import { VariableThemedColorSettingComponent } from './VariableThemedColorSettingComponent';
+import { t } from '../../lang/helpers';
 import { SettingType } from './types';
 import { setIcon, Setting } from 'obsidian';
 import { CSSSettingsManager } from 'src/SettingsManager';
@@ -214,7 +215,7 @@ export class HeadingSettingComponent extends AbstractSettingComponent {
 
 		this.resultsEl = this.settingEl.nameEl.createSpan({
 			cls: 'style-settings-filter-result-count',
-			text: this.filterMode ? `${this.filterResultCount} Results` : undefined,
+			text: this.filterMode ? t('{{count}} Results', { count: this.filterResultCount.toString() }) : undefined,
 		});
 
 		this.settingEl.settingEl.addEventListener('click', () => {
@@ -264,7 +265,7 @@ export class HeadingSettingComponent extends AbstractSettingComponent {
 			this.setCollapsed(true);
 		}
 		this.renderChildren();
-		this.resultsEl?.setText(`${this.filterResultCount} Results`);
+		this.resultsEl?.setText(t('{{count}} Results', { count: this.filterResultCount.toString() }));
 
 		return this.filterResultCount;
 	}
@@ -323,7 +324,7 @@ export class HeadingSettingComponent extends AbstractSettingComponent {
 		if (resetFn) {
 			this.settingEl.addExtraButton((b) => {
 				b.setIcon('reset')
-					.setTooltip('Reset all settings to default')
+					.setTooltip(t('Reset all settings to default'))
 					.onClick(resetFn);
 			});
 		}
@@ -332,7 +333,7 @@ export class HeadingSettingComponent extends AbstractSettingComponent {
 	private addExportButton() {
 		this.settingEl.addExtraButton((b) => {
 			b.setIcon('install');
-			b.setTooltip('Export settings');
+			b.setTooltip(t('Export settings'));
 			b.extraSettingsEl.onClickEvent((e) => {
 				e.stopPropagation();
 				let title = getTitle(this.setting);

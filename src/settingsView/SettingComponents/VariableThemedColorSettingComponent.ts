@@ -83,12 +83,12 @@ export class VariableThemedColorSettingComponent extends AbstractSettingComponen
 
 		this.settingEl.descEl.createDiv({}, (div) => {
 			div.createEl('small', {}, (sm) => {
-				sm.appendChild(createEl('strong', { text: 'Default (light): ' }));
+				sm.appendChild(createEl('strong', { text: t('Default (light): ') }));
 				sm.appendChild(document.createTextNode(this.setting['default-light']));
 			});
 			div.createEl('br');
 			div.createEl('small', {}, (sm) => {
-				sm.appendChild(createEl('strong', { text: 'Default (dark): ' }));
+				sm.appendChild(createEl('strong', { text: t('Default (dark): ') }));
 				sm.appendChild(document.createTextNode(this.setting['default-dark']));
 			});
 		});
@@ -176,7 +176,7 @@ export class VariableThemedColorSettingComponent extends AbstractSettingComponen
 			themeLightWrapper.style.setProperty('--pcr-color', resetColor);
 			this.settingsManager.clearSetting(this.sectionId, idLight);
 		});
-		themeLightReset.setTooltip(resetTooltip);
+		themeLightReset.setTooltip(resetTooltip());
 	}
 
 	private createColorPickerDark(
@@ -229,7 +229,7 @@ export class VariableThemedColorSettingComponent extends AbstractSettingComponen
 			themeDarkWrapper.style.setProperty('--pcr-color', resetColor);
 			this.settingsManager.clearSetting(this.sectionId, idDark);
 		});
-		themeDarkReset.setTooltip(resetTooltip);
+		themeDarkReset.setTooltip(resetTooltip());
 	}
 
 	private onSave(

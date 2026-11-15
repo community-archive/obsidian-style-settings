@@ -59,7 +59,7 @@ export class VariableNumberSliderSettingComponent extends AbstractSettingCompone
 				this.sliderComponent.setValue(this.setting.default);
 				this.settingsManager.clearSetting(this.sectionId, this.setting.id);
 			});
-			b.setTooltip(resetTooltip);
+			b.setTooltip(resetTooltip());
 		});
 
 		this.settingEl.settingEl.dataset.id = this.setting.id;
