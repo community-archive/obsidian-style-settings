@@ -21,6 +21,7 @@ export class ImportModal extends Modal {
 		const { contentEl, modalEl } = this;
 
 		modalEl.addClass('modal-style-settings');
+		this.titleEl.setText(t('Import style setting'));
 
 		new Setting(contentEl)
 			.setName(t('Import style setting'))

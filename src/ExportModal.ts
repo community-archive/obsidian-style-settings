@@ -24,6 +24,7 @@ export class ExportModal extends Modal {
 		const { contentEl, modalEl } = this;
 
 		modalEl.addClass('modal-style-settings');
+		this.titleEl.setText(t('Export settings'));
 
 		new Setting(contentEl)
 			.setName(t('Export settings for: {{section}}', { section: this.section }))

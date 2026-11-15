@@ -224,7 +224,7 @@ export default class CSSSettingsPlugin extends Plugin {
 						for (const warning of warnings) {
 							this.errorList.push({
 								name,
-								error: `[${warning.code}] ${warning.message}`,
+								error: `[${warning.code}] ${t(warning.message as keyof typeof import('./lang/locale/en').en)}`,
 							});
 						}
 					}
