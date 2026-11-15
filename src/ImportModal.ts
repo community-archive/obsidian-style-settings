@@ -1,3 +1,4 @@
+import { t } from './lang/helpers';
 import { SettingValue } from './SettingsManager';
 import CSSSettingsPlugin from './main';
 import {
@@ -22,16 +23,18 @@ export class ImportModal extends Modal {
 		modalEl.addClass('modal-style-settings');
 
 		new Setting(contentEl)
-			.setName('Import style setting')
+			.setName(t('Import style setting'))
 			.setDesc(
-				'Import an entire or partial configuration. Warning: this may override existing settings'
+				t(
+					'Import an entire or partial configuration. Warning: this may override existing settings'
+				)
 			);
 
 		new Setting(contentEl).then((setting) => {
 			// Build an error message container
 			const errorSpan = createSpan({
 				cls: 'style-settings-import-error',
-				text: 'Error importing config',
+				text: t('Error importing config'),
 			});
 
 			setting.nameEl.appendChild(errorSpan);
@@ -51,11 +54,11 @@ export class ImportModal extends Modal {
 						this.close();
 					} catch (e) {
 						errorSpan.addClass('active');
-						errorSpan.setText(`Error importing style settings: ${e}`);
+						errorSpan.setText(t('Error importing style settings: {{error}}', { error: `${e}` }));
 					}
 				} else {
 					errorSpan.addClass('active');
-					errorSpan.setText(`Error importing style settings: config is empty`);
+					errorSpan.setText(t('Error importing style settings: config is empty'));
 				}
 			};
 
@@ -94,17 +97,17 @@ export class ImportModal extends Modal {
 			// Build a label we will style as a link
 			setting.controlEl.createEl('label', {
 				cls: 'style-settings-import-label',
-				text: 'Import from file',
+				text: t('Import from file'),
 				attr: {
 					for: 'style-settings-import-input',
 				},
 			});
 
 			new TextAreaComponent(contentEl)
-				.setPlaceholder('Paste config here...')
+				.setPlaceholder(t('Paste config here...'))
 				.then((ta) => {
 					new ButtonComponent(contentEl)
-						.setButtonText('Save')
+						.setButtonText(t('Save'))
 						.onClick(async () => {
 							await importAndClose(ta.getValue().trim());
 						});

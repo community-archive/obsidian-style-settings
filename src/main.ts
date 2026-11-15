@@ -1,4 +1,5 @@
 import { ClassToggle, CSSSetting, ParsedCSSSettings } from './SettingHandlers';
+import { t } from './lang/helpers';
 import { CSSSettingsManager } from './SettingsManager';
 import {
 	ErrorList,
@@ -44,7 +45,7 @@ export default class CSSSettingsPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'show-style-settings-leaf',
-			name: 'Show style settings view',
+			name: t('Show style settings view'),
 			callback: () => {
 				this.activateView();
 			},
@@ -152,7 +153,7 @@ export default class CSSSettingsPlugin extends Plugin {
 						...parsedCSSSetting.settings.map((x) => {
 							const settingsSearchResource: SettingsSeachResource = {
 								tab: 'obsidian-style-settings',
-								name: 'Style Settings',
+								name: t('Style Settings'),
 								text: getTitle(x) ?? '',
 								desc: getDescription(x) ?? '',
 							};

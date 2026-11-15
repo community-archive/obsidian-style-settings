@@ -25,6 +25,16 @@ import { zhTw } from './locale/zhTw';
 
 export const lang: string | null = window.localStorage.getItem('language');
 
+function normalizeLang(value: string | null): string {
+	if (!value) return 'en';
+	const normalized = value.replace('_', '-').toLowerCase();
+	if (normalized === 'zh-tw' || normalized === 'zh-hant') return 'zh-TW';
+	if (normalized.split('-')[0] === 'zh') return 'zh';
+	return value;
+}
+
+const normalizedLang = normalizeLang(lang);
+
 const localeMap: { [k: string]: Partial<typeof en> } = {
 	ar,
 	cz,
@@ -52,12 +62,16 @@ const localeMap: { [k: string]: Partial<typeof en> } = {
 	zh,
 };
 
-const locale = localeMap[lang || 'en'];
+const locale = localeMap[normalizedLang];
 
-export function t(str: keyof typeof en): string {
+export function t(str: keyof typeof en, values: Record<string, string> = {}): string {
 	if (!locale) {
-		console.error('Error: Style Settings locale not found', lang);
+		console.error('Error: Style Settings locale not found', normalizedLang);
 	}
 
-	return (locale && locale[str]) || en[str];
+	const text = (locale && locale[str]) || en[str];
+	return Object.entries(values).reduce(
+		(result, [name, value]) => result.split(`{{${name}}}`).join(value),
+		text
+	);
 }

@@ -5,6 +5,7 @@ import {
 	buildSettingComponentTree,
 	HeadingSettingComponent,
 } from './SettingComponents/HeadingSettingComponent';
+import { t } from '../lang/helpers';
 import { App, Component, Setting, debounce } from 'obsidian';
 
 export class SettingsMarkup extends Component {
@@ -73,7 +74,7 @@ export class SettingsMarkup extends Component {
 			containerEl.createDiv({ cls: 'style-settings-error' }, (wrapper) => {
 				wrapper.createDiv({
 					cls: 'style-settings-error-name',
-					text: `Error: ${err.name}`,
+					text: `${t('Error:')} ${err.name}`,
 				});
 				wrapper.createDiv({
 					cls: 'style-settings-error-desc',
@@ -89,15 +90,17 @@ export class SettingsMarkup extends Component {
 		containerEl.createDiv({ cls: 'style-settings-empty' }, (wrapper) => {
 			wrapper.createDiv({
 				cls: 'style-settings-empty-name',
-				text: 'No style settings found',
+				text: t('No style settings found'),
 			});
 			wrapper.createDiv({ cls: 'style-settings-empty-desc' }).appendChild(
 				createFragment((frag) => {
 					frag.appendText(
-						'Style settings configured by theme and plugin authors will show up here. You can also create your own configuration by creating a CSS snippet in your vault. '
+						t(
+							'Style settings configured by theme and plugin authors will show up here. You can also create your own configuration by creating a CSS snippet in your vault. '
+						)
 					);
 					frag.createEl('a', {
-						text: 'Click here for details and examples.',
+						text: t('Click here for details and examples.'),
 						href: 'https://github.com/mgmeyers/obsidian-style-settings#obsidian-style-settings-plugin',
 					});
 				})
@@ -123,7 +126,7 @@ export class SettingsMarkup extends Component {
 				'a',
 				{
 					cls: 'style-settings-import',
-					text: 'Import',
+					text: t('Import'),
 					href: '#',
 				},
 				(el) => {
@@ -139,14 +142,14 @@ export class SettingsMarkup extends Component {
 				'a',
 				{
 					cls: 'style-settings-export',
-					text: 'Export',
+					text: t('Export'),
 					href: '#',
 				},
 				(el) => {
 					el.addEventListener('click', (e) => {
 						e.preventDefault();
 						this.plugin.settingsManager.export(
-							'All settings',
+							t('All settings'),
 							this.plugin.settingsManager.settings
 						);
 					});
@@ -170,7 +173,7 @@ export class SettingsMarkup extends Component {
 						true
 					)
 				);
-				searchComponent.setPlaceholder('Search Style Settings...');
+				searchComponent.setPlaceholder(t('Search Style Settings...'));
 				// move the search component from the back to the front
 				if (setting.controlEl.lastChild) {
 					setting.nameEl.appendChild(setting.controlEl.lastChild);

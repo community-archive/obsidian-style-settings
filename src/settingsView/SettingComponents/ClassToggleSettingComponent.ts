@@ -39,7 +39,7 @@ export class ClassToggleSettingComponent extends AbstractSettingComponent {
 				this.toggleComponent.setValue(value);
 				this.settingsManager.clearSetting(this.sectionId, this.setting.id);
 			});
-			b.setTooltip(resetTooltip);
+			b.setTooltip(resetTooltip());
 		});
 
 		this.settingEl.settingEl.dataset.id = this.setting.id;

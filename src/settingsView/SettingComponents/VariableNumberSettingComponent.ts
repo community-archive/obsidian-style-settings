@@ -60,7 +60,7 @@ export class VariableNumberSettingComponent extends AbstractSettingComponent {
 				this.textComponent.setValue(this.setting.default.toString());
 				this.settingsManager.clearSetting(this.sectionId, this.setting.id);
 			});
-			b.setTooltip(resetTooltip);
+			b.setTooltip(resetTooltip());
 		});
 
 		this.settingEl.settingEl.dataset.id = this.setting.id;
